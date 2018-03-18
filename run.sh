@@ -34,9 +34,9 @@ sysbench --test=oltp --oltp-table-size=1000000 --mysql-user=root prepare
 sysbench --test=oltp --oltp-table-size=1000000 --mysql-user=root run > results/mysql.log
 sysbench --test=oltp --oltp-table-size=1000000 --mysql-user=root cleanup
 
-./speedtest-cli --server=7340 > results/speedtest1.log
-./speedtest-cli --server=7340 > results/speedtest2.log
-./speedtest-cli --server=7340 > results/speedtest3.log
+./speedtest-cli --server=16089 > results/speedtest1.log
+./speedtest-cli --server=16089 > results/speedtest2.log
+./speedtest-cli --server=16089 > results/speedtest3.log
 
 ab -kc 1000 -n 10000 http://127.0.0.1/ > results/ab.log
 
