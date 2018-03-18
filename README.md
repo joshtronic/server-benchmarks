@@ -1,4 +1,4 @@
-# server-benchmark
+# server-benchmarks
 
 By popular demand, these are the tests that I use when doing the VPS comparison
 posts for my blog, [joshtronic.com][joshtronic]
