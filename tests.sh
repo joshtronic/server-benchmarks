@@ -40,4 +40,4 @@ sysbench --test=oltp --oltp-table-size=1000000 --mysql-user=root cleanup
 
 ab -kc 1000 -n 10000 http://127.0.0.1/ > results/ab.log
 
-tar -zcvf results-$PROVIDER.tgz results
+tar -zcvf "results-$PROVIDER.tgz" results
