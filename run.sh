@@ -11,7 +11,7 @@ swapoff -a
 
 apt-get update
 apt-get upgrade -y
-apt-get install sysbench apache2 mailutils mysql-server python -y
+apt-get install sysbench nginx mysql-server python -y
 
 wget -O speedtest-cli https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py
 chmod +x speedtest-cli
