@@ -30,9 +30,9 @@ sysbench --test=fileio --file-test-mode=rndrw run > results/fileio.log
 sysbench --test=fileio cleanup
 
 mysql -uroot -e "CREATE DATABASE sbtest;"
-sysbench --table-size=1000000 --mysql-user=root /usr/share/sysbench/oltp_read_only.lua prepare
-sysbench --table-size=1000000 --mysql-user=root /usr/share/sysbench/oltp_read_only.lua run > results/mysql.log
-sysbench --table-size=1000000 --mysql-user=root /usr/share/sysbench/oltp_read_only.lua cleanup
+sysbench --db-driver=mysql --table-size=1000000 --mysql-user=root /usr/share/sysbench/oltp_read_write.lua prepare
+sysbench --db-driver=mysql --table-size=1000000 --mysql-user=root /usr/share/sysbench/oltp_read_write.lua run > results/mysql.log
+sysbench --db-driver=mysql --table-size=1000000 --mysql-user=root /usr/share/sysbench/oltp_read_write.lua cleanup
 
 ./speedtest-cli --server=16089 > results/speedtest1.log
 ./speedtest-cli --server=16089 > results/speedtest2.log
