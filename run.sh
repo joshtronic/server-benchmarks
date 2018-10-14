@@ -1,8 +1,8 @@
 #!/bin/bash
 
 if [ $# -eq 0 ]; then
-    echo 'Missing argument, provider name'
-    exit 1
+  echo 'Missing argument, provider name'
+  exit 1
 fi;
 
 PROVIDER=$1
