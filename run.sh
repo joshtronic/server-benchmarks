@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export DEBIAN_FRONTEND=noninteractive
+
 if [ $# -eq 0 ]; then
   echo 'Missing argument, provider name'
   exit 1
