@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Skip prompts so we can run unattended
 export DEBIAN_FRONTEND=noninteractive
 
 if [ $# -eq 0 ]; then
@@ -15,6 +16,7 @@ apt-get update
 apt-get upgrade -y
 apt-get install sysbench nginx mysql-server python -y
 
+# Grabs the major version of sysbench so we can use the correct parameters for MySQL
 SYSBENCH_MAJOR_VERSION=$(sysbench --version | cut -d ' ' -f 2 | cut -d '.' -f 1)
 
 wget -O speedtest-cli https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py
@@ -51,4 +53,5 @@ fi
 ./speedtest-cli --server=16089 > results/speedtest2.log
 ./speedtest-cli --server=16089 > results/speedtest3.log
 
+# Wraps it all up in a nice package
 tar -zcvf "results-$PROVIDER.tgz" results
