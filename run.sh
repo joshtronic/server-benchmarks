@@ -14,7 +14,7 @@ swapoff -a
 
 apt-get update
 apt-get upgrade -y
-apt-get install sysbench nginx mysql-server python -y
+apt-get install sysbench nginx mysql-server python redis-server -y
 
 # Grabs the major version of sysbench so we can use the correct parameters for MySQL
 SYSBENCH_MAJOR_VERSION=$(sysbench --version | cut -d ' ' -f 2 | cut -d '.' -f 1)
@@ -48,6 +48,8 @@ else
   sysbench --db-driver=mysql --table-size=1000000 --mysql-user=root /usr/share/sysbench/oltp_read_write.lua run > results/mysql.log
   sysbench --db-driver=mysql --table-size=1000000 --mysql-user=root /usr/share/sysbench/oltp_read_write.lua cleanup
 fi
+
+redis-benchmark -q -n 100000 --csv > results/redis-benchmark.log
 
 ./speedtest-cli --server=16089 > results/speedtest1.log
 ./speedtest-cli --server=16089 > results/speedtest2.log
