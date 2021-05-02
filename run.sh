@@ -14,7 +14,11 @@ SPEEDTEST_SERVER=1774
 swapoff -a
 
 apt-get update
-apt-get upgrade -y
+
+apt-get upgrade -q -y -u  -o Dpkg::Options::="--force-confdef" \
+  --allow-downgrades --allow-remove-essential --allow-change-held-packages \
+  --allow-change-held-packages --allow-unauthenticated
+
 apt-get install sysbench nginx mysql-server python redis-server -y
 
 wget -O speedtest-cli https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py
@@ -23,6 +27,9 @@ chmod +x speedtest-cli
 mkdir results
 
 cat /proc/cpuinfo > results/proc-cpuinfo.txt
+uname -a > results/uname-a.txt
+mysql --version > results/mysql-version.txt
+redis-server --version > results/redis-server-version.txt
 
 sysbench cpu run > results/sysbench-cpu.txt
 
@@ -60,9 +67,9 @@ done
 
 redis-benchmark -q -n 100000 --csv > results/redis-benchmark.txt
 
-./speedtest-cli --json --secure --single --server="$SPEEDTEST_SERVER" > results/speedtest1.txt
-./speedtest-cli --json --secure --single --server="$SPEEDTEST_SERVER" > results/speedtest2.txt
-./speedtest-cli --json --secure --single --server="$SPEEDTEST_SERVER" > results/speedtest3.txt
+./speedtest-cli --json --secure --single --server="$SPEEDTEST_SERVER" > results/speedtest1.json
+./speedtest-cli --json --secure --single --server="$SPEEDTEST_SERVER" > results/speedtest2.json
+./speedtest-cli --json --secure --single --server="$SPEEDTEST_SERVER" > results/speedtest3.json
 
 # Wraps it all up in a nice package
 tar -zcvf "results-$PROVIDER.tgz" results
