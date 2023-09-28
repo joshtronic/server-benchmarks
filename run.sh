@@ -19,7 +19,7 @@ apt-get upgrade -q -y -u  -o Dpkg::Options::="--force-confdef" \
   --allow-downgrades --allow-remove-essential --allow-change-held-packages \
   --allow-change-held-packages --allow-unauthenticated
 
-apt-get install sysbench nginx mysql-server python redis-server -y
+apt-get install sysbench nginx mysql-server python3 redis-server -y
 
 wget -O speedtest-cli https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py
 chmod +x speedtest-cli
