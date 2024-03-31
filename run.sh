@@ -24,8 +24,29 @@ apt-get install sysbench nginx mysql-server python-is-python3 redis-server -y
 wget -O speedtest-cli https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py
 chmod +x speedtest-cli
 
+####
+
+## WIP Mongo stuff
+
+apt-get install gnupg curl
+
+curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc | \
+   gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg \
+   --dearmor
+
+echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | \
+  tee /etc/apt/sources.list.d/mongodb-org-7.0.list
+
+apt-get update
+apt-get install -y mongodb-org
+
+systemctl start mongod
+
+###
+
 mkdir results
 
+# CPU
 cat /proc/cpuinfo > results/proc-cpuinfo.txt
 uname -a > results/uname-a.txt
 mysql --version > results/mysql-version.txt
@@ -33,16 +54,20 @@ redis-server --version > results/redis-server-version.txt
 
 sysbench cpu run > results/sysbench-cpu.txt
 
+# Memory
 sysbench memory run > results/sysbench-memory-read.txt
 sysbench --memory-oper=write memory run > results/sysbench-memory-write.txt
 
+# File I/O
 sysbench fileio prepare
 sysbench --file-test-mode=rndrw fileio run > results/sysbench-fileio.txt
 sysbench fileio cleanup
 
+# Threads
 sysbench --threads=10 threads run > results/sysbench-threads.txt
 sysbench --threads=10 mutex run > results/sysbench-mutex.txt
 
+# MySQL
 mysql -uroot -e "CREATE DATABASE sbtest;"
 
 TESTS=(
@@ -65,8 +90,10 @@ for TEST in "${TESTS[@]}"; do
   sysbench --db-driver=mysql --table-size=1000000 --mysql-user=root "/usr/share/sysbench/$TEST.lua" cleanup
 done
 
+# Redis
 redis-benchmark -q -n 100000 --csv > results/redis-benchmark.txt
 
+# Speedtest
 ./speedtest-cli --json --secure --single --server="$SPEEDTEST_SERVER" > results/speedtest1.json
 ./speedtest-cli --json --secure --single --server="$SPEEDTEST_SERVER" > results/speedtest2.json
 ./speedtest-cli --json --secure --single --server="$SPEEDTEST_SERVER" > results/speedtest3.json
